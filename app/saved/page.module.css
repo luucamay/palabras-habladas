@@ -1,0 +1,74 @@
+.main {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  min-height: 100vh;
+  font-size: 0.7rem;
+}
+
+.main h2 {
+  font-size: 1.2rem;
+}
+
+.main h2:first-letter {
+  text-transform: capitalize;
+}
+
+.card {
+  border-bottom: solid gainsboro 1px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  margin: 16px;
+  padding: 8px;
+  width: 100%;
+}
+.card .img {
+  grid-area: 1/1/3/3;
+
+  align-self: center;
+}
+
+.card .title {
+  grid-area: 1/3/2/6;
+}
+
+.card .url {
+  grid-area: 2/3/3/6;
+  font-weight: bold;
+}
+
+.card .description {
+  grid-area: 3/1/4/6;
+}
+
+.card .duration {
+  grid-area: 4/1/5/6;
+}
+
+.card button {
+  grid-row-start: 5;
+  background-color: transparent;
+}
+
+.card .play {
+  grid-column-start: 5;
+}
+
+/* 
+ * Utility class to hide content visually while keeping it screen reader-accessible.
+ * Source: https://www.scottohara.me/blog/2017/04/14/inclusively-hidden.html 
+ */
+
+.visually_hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

@@ -70,6 +70,8 @@ export default function Home() {
       <div id='playerArea'>
         <audio id='audio' controls src="none">
           <a href="none"> Download audio </a>
+          <a href="none"> save audio </a>
+
         </audio>
       </div>
     </main>
