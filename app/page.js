@@ -2,7 +2,8 @@
 import styles from './page.module.css'
 const apiKey = process.env.XI_API_KEY
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from '../firebase/config'
+import { storage } from '@/firebase/config'
+import addData from "@/firebase/firestore/addData";
 
 export default function Home() {
   const convertToPlain = (html) => {
@@ -44,14 +45,26 @@ export default function Home() {
     const storageRef = ref(storage, 'audio/voice1.mp3');
     // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, blob)
-    const url = await getDownloadURL(storageRef)
-    audioElement.src = url
-    audioLink.href = url
-    console.log(audioElement)
+    const audioUrl = await getDownloadURL(storageRef)
+    audioElement.src = audioUrl
+    audioLink.href = audioUrl
 
+    const article = {
+      audioUrl: audioUrl,
+      title: 'a title',
+      url: 'someurl.com',
+      description: 'a nice description',
+      durationSecs: 3000,
+      minimg: 'an src to an image',
+      downloaded: false
+    }
+    const { result, error } = await addData('articles', article)
 
-
-
+    if (error) {
+      return console.log(error)
+    } else {
+      return console.log(result)
+    }
 
   }
 

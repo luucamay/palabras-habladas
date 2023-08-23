@@ -1,6 +1,5 @@
 'use client'
 import './globals.css'
-import { AuthContextProvider } from '@/context/AuthContext'
 
 export const metadata = {
   title: 'Hablame',
@@ -16,9 +15,7 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        <AuthContextProvider>
-          {children}
-        </AuthContextProvider>
+        {children}
       </body>
     </html>
   )
