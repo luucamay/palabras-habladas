@@ -1,6 +1,9 @@
 'use client';
 import styles from './page.module.css'
 const apiKey = process.env.XI_API_KEY
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from '@/firebase/config'
+import addData from "@/firebase/firestore/addData";
 
 export default function Home() {
   const convertToPlain = (html) => {
@@ -15,7 +18,7 @@ export default function Home() {
     return tempDivElement.textContent || tempDivElement.innerText || "";
   }
 
-  const createAudio = (e) => {
+  const createAudio = async (e) => {
     e.preventDefault()
     const text = document.querySelector('#textInput').value
     const audioElement = document.querySelector('#audio')
@@ -23,7 +26,7 @@ export default function Home() {
     const ctx = new AudioContext()
     console.log('Creating your audio..')
     // download an audio file
-    fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+    const data = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
       method: 'POST',
       body: JSON.stringify({
         'text': text
@@ -33,17 +36,36 @@ export default function Home() {
         'xi-api-key': apiKey,
         'Content-Type': 'application/json'
       },
-    }).then(data => {
-      console.log(data)
-      return data.blob()
     })
-      .then(blob => {
-        const audioURL = URL.createObjectURL(blob)
-        audioElement.src = audioURL
-        audioLink.href = audioURL
-        console.log(audioElement)
-      })
-      .catch((e) => console.log(e));
+    const blob = await data.blob()
+    // TODO save the reference in DB
+    // UUID -> generate in browser
+    // use the DB id autogenrated to the name
+    // Create a storage reference from our storage service
+    const storageRef = ref(storage, 'audio/voice1.mp3');
+    // 'file' comes from the Blob or File API
+    await uploadBytes(storageRef, blob)
+    const audioUrl = await getDownloadURL(storageRef)
+    audioElement.src = audioUrl
+    audioLink.href = audioUrl
+
+    const article = {
+      audioUrl: audioUrl,
+      title: 'a title',
+      url: 'someurl.com',
+      description: 'a nice description',
+      durationSecs: 3000,
+      minimg: 'an src to an image',
+      downloaded: false
+    }
+    const { result, error } = await addData('articles', article)
+
+    if (error) {
+      return console.log(error)
+    } else {
+      return console.log(result)
+    }
+
   }
 
   const getText = (e) => {
@@ -70,6 +92,8 @@ export default function Home() {
       <div id='playerArea'>
         <audio id='audio' controls src="none">
           <a href="none"> Download audio </a>
+          <a href="none"> save audio </a>
+
         </audio>
       </div>
     </main>
