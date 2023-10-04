@@ -12,7 +12,9 @@ export default function Home() {
     e.preventDefault()
 
     // Create audio from text
-    const textSource = document.querySelector('#textInput').value
+    let textSource = document.querySelector('#textInput').value
+    if (textSource.length > 5000)
+      textSource = textSource.slice(0, 5000)
     const audioResult = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
       method: 'POST',
       body: JSON.stringify({
