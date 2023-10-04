@@ -4,6 +4,7 @@ const apiKey = process.env.XI_API_KEY
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from '@/firebase/config'
 import addData from "@/firebase/firestore/addData";
+import crypto from "crypto"
 
 export default function Home() {
   const convertToPlain = (html) => {
@@ -20,16 +21,13 @@ export default function Home() {
 
   const createAudio = async (e) => {
     e.preventDefault()
-    const text = document.querySelector('#textInput').value
-    const audioElement = document.querySelector('#audio')
-    const audioLink = document.querySelector('#audio a')
-    const ctx = new AudioContext()
-    console.log('Creating your audio..')
-    // download an audio file
-    const data = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
+
+    // Create audio from text
+    const textSource = document.querySelector('#textInput').value
+    const audioResult = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
       method: 'POST',
       body: JSON.stringify({
-        'text': text
+        'text': textSource
       }),
       headers: {
         'accept': 'audio/mpeg',
@@ -37,18 +35,21 @@ export default function Home() {
         'Content-Type': 'application/json'
       },
     })
-    const blob = await data.blob()
-    // TODO save the reference in DB
-    // UUID -> generate in browser
-    // use the DB id autogenrated to the name
-    // Create a storage reference from our storage service
-    const storageRef = ref(storage, 'audio/voice1.mp3');
-    // 'file' comes from the Blob or File API
-    await uploadBytes(storageRef, blob)
+
+    // Save article in the storage
+    const audioUUID = crypto.randomBytes(20).toString('hex')
+    const audioBlob = await audioResult.blob()
+    const storageRef = ref(storage, `audio/${audioUUID}.mp3`)
+    await uploadBytes(storageRef, audioBlob)
     const audioUrl = await getDownloadURL(storageRef)
+
+    // Make the new url available in the client player
+    const audioElement = document.querySelector('#audio')
+    const audioLink = document.querySelector('#audio a')
     audioElement.src = audioUrl
     audioLink.href = audioUrl
 
+    // Save Article in the database
     const article = {
       audioUrl: audioUrl,
       title: 'a title',
@@ -59,12 +60,13 @@ export default function Home() {
       downloaded: false
     }
     const { result, error } = await addData('articles', article)
-
     if (error) {
       return console.log(error)
     } else {
       return console.log(result)
     }
+
+    // reload the other view with this new data?
 
   }
 
@@ -85,7 +87,8 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <section>
-        <input size={100} type='text' id='url' defaultValue='luucamay/the-week-i-danced-with-martha-graham-and-unleashed-ai-magic-at-rc-2d1a' /><button onClick={getText}>Import from url</button>
+        <input size={100} type='text' id='url' defaultValue='luucamay/the-week-i-danced-with-martha-graham-and-unleashed-ai-magic-at-rc-2d1a' />
+        <button onClick={getText}>Import from url</button>
       </section>
       <textarea id='textInput' rows={20} cols={40} defaultValue='It has been a while I am not who I was before.' />
       <button onClick={createAudio}>Create audio</button>
@@ -93,7 +96,6 @@ export default function Home() {
         <audio id='audio' controls src="none">
           <a href="none"> Download audio </a>
           <a href="none"> save audio </a>
-
         </audio>
       </div>
     </main>
