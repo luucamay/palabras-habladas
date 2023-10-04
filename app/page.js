@@ -7,17 +7,6 @@ import addData from "@/firebase/firestore/addData";
 import crypto from "crypto"
 
 export default function Home() {
-  const convertToPlain = (html) => {
-
-    // Create a new div element
-    const tempDivElement = document.createElement("div");
-
-    // Set the HTML content with the given value
-    tempDivElement.innerHTML = html;
-
-    // Retrieve the text property of the element
-    return tempDivElement.textContent || tempDivElement.innerText || "";
-  }
 
   const createAudio = async (e) => {
     e.preventDefault()
@@ -70,16 +59,18 @@ export default function Home() {
 
   }
 
-  const getText = (e) => {
+  const getArticleText = (e) => {
     e.preventDefault();
     const inputUrl = document.querySelector('#url')
-    const url = new URL(inputUrl.value, 'https://dev.to/api/articles/')
-
-    fetch(url)
+    const url = encodeURIComponent(inputUrl.value)
+    console.log(url)
+    // call api and wait for its result
+    fetch(`https://text-from-url.onrender.com/article/${url}`)
       .then(res => res.json())
-      .then(json => {
+      .then(data => {
+        console.log(data)
         const textarea = document.querySelector('#textInput')
-        textarea.value = convertToPlain(json.body_html)
+        textarea.value = data.textContent
       })
 
   }
@@ -88,7 +79,7 @@ export default function Home() {
     <main className={styles.main}>
       <section>
         <input size={100} type='text' id='url' defaultValue='luucamay/the-week-i-danced-with-martha-graham-and-unleashed-ai-magic-at-rc-2d1a' />
-        <button onClick={getText}>Import from url</button>
+        <button onClick={getArticleText}>Import from url</button>
       </section>
       <textarea id='textInput' rows={20} cols={40} defaultValue='It has been a while I am not who I was before.' />
       <button onClick={createAudio}>Create audio</button>
