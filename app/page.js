@@ -19,8 +19,8 @@ export default function Home() {
 
     // Create audio from text
     let textSource = document.querySelector('#textInput').value
-    if (textSource.length > 5000)
-      textSource = textSource.slice(0, 5000)
+    if (textSource.length > 4500)
+      textSource = textSource.slice(0, 4500)
 
     const audioResult = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
       method: 'POST',
@@ -69,7 +69,7 @@ export default function Home() {
     const url = encodeURIComponent(inputUrl.value)
     console.log('obteniendo texto de la URL...')
     const statusMsg = document.querySelector('#statusMessage1')
-    statusMsg.textContent = 'getting text from url...'
+    statusMsg.textContent = 'obteniendo texto...'
     fetch(`https://text-from-url.onrender.com/article/${url}`)
       .then(res => res.json())
       .then(data => {
@@ -90,25 +90,28 @@ export default function Home() {
         <h2>Transforma texto en audio desde cualquier sitio web</h2>
       </header>
       <section id='urlInputSec' className={styles.inputUrl}>
-        <h3>Please introduce the url of the article. The limit is 5000 chars</h3>
+        <h3>1) Por favor introduce una URL:</h3>
         <input type='text' id='url' defaultValue='https://www.freecodecamp.org/news/increase-your-vs-code-productivity/' />
-        <button onClick={getArticleText}>Import from url</button>
+        <button onClick={getArticleText}>📝Obtener texto</button>
         <p id='statusMessage1'></p>
       </section>
       <section className={styles.reviewText}>
+        <h3>2) Revisa el texto para convertirlo a audio. El limite es 4500 caracteres.</h3>
         <textarea id='textInput' className={styles.textAreaReview} />
-        <button onClick={createAudio} id='createAudioBtn'>Create audio</button>
+        <button onClick={createAudio} id='createAudioBtn'> ▶️Crear audio</button>
         <p id='statusMessage2'></p>
       </section>
-      <section className={styles.player} id='playerArea' >
-        {src ?
-          (<audio id='audio' controls src={src} autoPlay>
+      {src ?
+        (<section className={styles.player} id='playerArea' >
+          <h3>3) Descarga tu audio o escuchalo aqui mismo 👇</h3>
+          <audio id='audio' controls src={src} autoPlay>
             <a href={src}> Download audio </a>
-          </audio>)
-          :
-          (<div></div>)
-        }
-      </section >
+          </audio>
+        </section >
+        )
+        :
+        (<div></div>)
+      }
     </main>
   )
 }
