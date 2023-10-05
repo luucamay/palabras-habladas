@@ -1,12 +1,63 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 6rem;
+  padding: 24px;
   min-height: 100vh;
+  gap: 24px;
 }
 
 #audio {
   border-color: aquamarine;
+}
+
+.hide {
+  display: none;
+}
+
+.inputUrl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  gap: 8px;
+}
+
+.inputUrl * {
+  font-size: larger;
+  padding: 4px;
+}
+
+.reviewText {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textAreaReview {
+  font-size: large;
+  height: 30vh;
+}
+
+.main button {
+  font-size: larger;
+  padding: 4px;
+  width: 100%;
+}
+
+.player {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player audio {
+  width: 100%;
+}
+
+.main h1 {
+  font-size: xx-large;
+  font-family: "Young Serif", serif;
 }
