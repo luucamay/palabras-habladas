@@ -91,7 +91,7 @@ export default function Home() {
       </header>
       <section id='urlInputSec' className={styles.inputUrl}>
         <h3>1) Por favor introduce una URL:</h3>
-        <input type='text' id='url' defaultValue='https://www.freecodecamp.org/news/increase-your-vs-code-productivity/' />
+        <input type='text' id='url' defaultValue='https://dev.to/luucamay/the-week-i-danced-with-martha-graham-and-unleashed-ai-magic-at-rc-2d1a' />
         <button onClick={getArticleText}>📝Obtener texto</button>
         <p id='statusMessage1'></p>
       </section>
