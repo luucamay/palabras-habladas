@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <header>
-        <h1>Palabras al oido</h1>
+        <h1>Palabras habladas</h1>
         <h2>Transforma texto en audio desde cualquier sitio web</h2>
       </header>
       <section id='urlInputSec' className={styles.inputUrl}>
