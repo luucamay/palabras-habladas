@@ -1,6 +1,6 @@
-# Voice clone
+# Palabras habladas
 
-A web app to clone your voice using eleven labs API
+A web app to generate AI audio from any article in the internet with just an url
 
 ## TODO
 
