@@ -1,11 +1,6 @@
 'use client'
 import './globals.css'
 
-export const metadata = {
-  title: 'Hablame',
-  description: 'Text to voice the articles you would love to read',
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
