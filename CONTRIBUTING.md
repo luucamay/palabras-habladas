@@ -13,13 +13,15 @@ git clone https://github.com/luucamay/palabras-habladas/
 
 ```
 
-Install Dependencies: Make sure you have Node.js installed. Navigate to the project's directory and install the dependencies.
+### Install Dependencies
+Make sure you have Node.js installed. Navigate to the project's directory and install the dependencies.
 
 ```shell
 cd palabras-habladas
 npm install
 ```
-Set Up Environment Variables: You may need to configure environment variables for your development environment. Refer to our env.example file and create a .env.local file with your settings.
+### Set Up Environment Variables
+You may need to configure environment variables for your development environment. Refer to our env.example file and create a .env.local file with your settings.
 
 ## Development
 We use Next.js for our project.
