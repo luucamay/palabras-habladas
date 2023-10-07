@@ -8,10 +8,12 @@ Welcome to our web project! We're excited to have you contribute. Please follow 
 
 2. **Clone the Repository**: Clone your forked repository to your local machine.
 
-   ```shell
-   git clone https://github.com/luucamay/palabras-habladas/
+```shell
+git clone https://github.com/luucamay/palabras-habladas/
 
-  ```
+```
+
+Install Dependencies: Make sure you have Node.js installed. Navigate to the project's directory and install the dependencies.
 
 ```shell
 cd palabras-habladas
