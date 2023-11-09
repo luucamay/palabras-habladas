@@ -1,4 +1,4 @@
-# Parlame
+# ParlaME
 
 A web app to generate AI audio from any article in the internet with just an url
 
